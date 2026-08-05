@@ -2,95 +2,73 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Recetario — Flor de Azalea</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<div id="screen-loading" class="screen">
-  <div class="marca">
-    <p class="marca__titulo">Flor de Azalea</p>
-    <p class="marca__subtitulo">Recetario de cocina</p>
-  </div>
-  <div class="tarjeta">Cargando…</div>
-</div>
-
-<div id="screen-config" class="screen hidden">
-  <div class="marca">
-    <p class="marca__titulo">Flor de Azalea</p>
-    <p class="marca__subtitulo">Recetario de cocina</p>
-  </div>
-  <div class="tarjeta">
-    <h2>Configuración inicial</h2>
-    <p class="ayuda">Pega aquí la URL del backend (Google Apps Script Web App). Solo se pide una vez por dispositivo.</p>
-    <label for="input-backend-url">URL del backend</label>
-    <input type="url" id="input-backend-url" placeholder="https://script.google.com/macros/s/XXXXX/exec">
-    <div id="config-error" class="aviso aviso-error hidden"></div>
-    <button class="btn btn-primario" id="btn-guardar-url">Guardar y continuar</button>
-  </div>
-</div>
-
-<div id="screen-home" class="screen hidden">
-  <div class="marca">
-    <p class="marca__titulo">Flor de Azalea</p>
-    <p class="marca__subtitulo">Recetario de cocina</p>
-  </div>
-  <div class="tarjeta">
-    <label for="input-buscar">Buscar receta</label>
-    <input type="text" id="input-buscar" placeholder="Nombre de la receta…">
-
-    <label>Categoría</label>
-    <div class="filtro-grid" id="filtro-categorias">
-      <button type="button" class="filtro-btn selected" data-categoria="">Todas</button>
-      <button type="button" class="filtro-btn" data-categoria="Aguas">Aguas</button>
-      <button type="button" class="filtro-btn" data-categoria="Cocina base">Cocina base</button>
+<!-- ══ CONFIGURACIÓN INICIAL ══ -->
+<div id="screen-setup">
+  <div class="setup-card">
+    <div class="setup-logo">
+      <div class="icon">🍳</div>
+      <h1>Recetario Flor de Azalea</h1>
+      <p>Conecta con la hoja de recetas para empezar</p>
     </div>
 
-    <div id="lista-recetas" class="lista-recetas"></div>
-    <div id="home-vacio" class="aviso aviso-info hidden">No se encontraron recetas.</div>
-  </div>
-</div>
-
-<div id="screen-ingredientes" class="screen hidden">
-  <header class="vista-header">
-    <button type="button" class="link-volver" id="btn-volver-ingredientes">← Volver al inicio</button>
-  </header>
-  <div class="tarjeta">
-    <h2 id="ingredientes-titulo"></h2>
-    <p class="receta-meta" id="ingredientes-meta"></p>
-    <p class="ayuda" id="ingredientes-notas"></p>
-    <div id="lista-ingredientes" class="lista-ingredientes"></div>
-    <button class="btn btn-primario" id="btn-comenzar-preparacion">Comenzar preparación</button>
-  </div>
-</div>
-
-<div id="screen-pasos" class="screen hidden">
-  <header class="vista-header">
-    <button type="button" class="link-volver" id="btn-volver-pasos">← Volver al inicio</button>
-  </header>
-  <div class="progress-bar"><div class="progress-bar__fill" id="pasos-progress-fill"></div></div>
-  <div class="progress-text" id="pasos-progress-text"></div>
-  <div class="tarjeta">
-    <h2 id="pasos-titulo"></h2>
-    <div class="paso-contenido" id="paso-contenido"></div>
-    <div class="paso-botones">
-      <button class="btn btn-secundario" id="btn-paso-anterior">Anterior</button>
-      <button class="btn btn-primario" id="btn-paso-siguiente">Siguiente</button>
+    <div class="setup-field">
+      <label for="setup-url">URL del Web App (Google Apps Script)</label>
+      <input type="url" id="setup-url" placeholder="https://script.google.com/macros/s/.../exec">
+      <div class="setup-hint">La URL pública de tu deployment. Solo se pide una vez por dispositivo.</div>
     </div>
+
+    <button class="btn-setup" id="btn-connect">Conectar y abrir recetario →</button>
+    <div class="setup-error" id="setup-error"></div>
   </div>
 </div>
 
-<div id="screen-completado" class="screen hidden">
-  <div class="final">
-    <div class="final__icono">✅</div>
-    <h1>¡Preparación completada!</h1>
-    <p class="ayuda" id="completado-nombre"></p>
-    <button type="button" class="btn btn-primario" id="btn-volver-inicio">Volver al inicio</button>
+<!-- ══ APP ══ -->
+<div id="app">
+  <header class="kds-header">
+    <button class="kds-mob-menu" id="btn-mob-menu" aria-label="Menú">☰</button>
+    <div class="kds-header-logo"><div class="live-dot"></div>Recetario</div>
+    <div class="header-spacer"></div>
+    <span class="header-time" id="header-time">—</span>
+    <button class="btn-icon" id="btn-configurar">⚙ Configurar</button>
+  </header>
+
+  <div id="kds-sidebar-overlay"></div>
+
+  <div class="kds-body">
+    <aside class="kds-sidebar" id="kds-sidebar">
+      <div class="sidebar-search">
+        <input type="text" id="search-input" placeholder="Buscar receta…">
+      </div>
+      <div class="sidebar-filters" id="type-filters"></div>
+      <div class="recipe-list" id="recipe-list">
+        <div class="sidebar-empty">Cargando…</div>
+      </div>
+    </aside>
+
+    <main class="kds-main" id="kds-main">
+      <div class="kds-empty">
+        <div class="big-icon">🍽</div>
+        <h2>Selecciona una receta</h2>
+        <p>Elige del panel izquierdo. Verás los ingredientes a reunir y el paso a paso de la preparación.</p>
+      </div>
+    </main>
   </div>
 </div>
 
-<footer class="creditos">Lonchería Flor de Azalea</footer>
+<div class="loader-wrap hidden" id="loader">
+  <div class="spinner"></div>
+  <div class="loader-text" id="loader-text">Cargando…</div>
+</div>
+
+<div class="kds-toast" id="kds-toast"></div>
 
 <script src="app.js"></script>
 </body>

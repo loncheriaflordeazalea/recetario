@@ -1,11 +1,16 @@
 # Recetario Flor de Azalea
 
 Consultor de referencia rápida para el personal de cocina de Lonchería Flor
-de Azalea. El empleado busca una receta, revisa el checklist de
-ingredientes a reunir y luego sigue los pasos de preparación uno por uno,
-estilo wizard.
+de Azalea, con el mismo lenguaje visual (tema oscuro, sidebar, tarjetas) que
+el proyecto [`kds`](https://loncheriaflordeazalea.github.io/kds/). El
+empleado busca una receta en la barra lateral y ve, en el panel principal,
+los ingredientes a reunir (tarjetas clickeables para marcarlos) y el paso a
+paso de la preparación como checklist (clic en cada paso para marcarlo
+hecho, en cualquier orden, con barra de progreso).
 
-No tiene login ni guarda progreso por empleado — es solo consulta.
+No tiene login ni guarda progreso por empleado — es solo consulta. El
+estado de ingredientes/pasos marcados vive solo en memoria del navegador y
+se pierde al recargar la página (no hay tracking).
 
 - **Frontend**: HTML/CSS/JS vanilla, sin build step, hosteado en GitHub Pages.
 - **Backend**: Google Apps Script Web App conectado a un Google Sheet (sin
@@ -16,9 +21,9 @@ No tiene login ni guarda progreso por empleado — es solo consulta.
 ## Estructura del repo
 
 ```
-index.html        Pantallas: configuración, inicio, ingredientes, pasos, completado
-app.js             Lógica de la app (fetch al backend, buscador/filtro, checklist, wizard)
-styles.css         Estilos mobile-first (paleta ámbar/terracota)
+index.html        Pantalla de configuración + shell de la app (sidebar + panel principal)
+app.js             Lógica de la app (fetch al backend, buscador/filtro, checklist de ingredientes y pasos)
+styles.css         Tema oscuro tipo KDS (Space Grotesk/Mono, sidebar, tarjetas)
 apps-script/
   Code.gs          Código del backend (referencia — se despliega con clasp)
   appsscript.json  Manifiesto del proyecto de Apps Script
@@ -32,9 +37,9 @@ dentro de `doGet`). Tú solo editas el contenido después — no hay interfaz
 de administración en el frontend:
 
 - **Recetas**: `receta_id, nombre, categoria, porciones, tiempo_prep, notas`
-  - `categoria` es `Aguas` o `Cocina base` (el filtro del frontend usa estos
-    dos valores; si agregas una categoría nueva, agrega también su botón en
-    `index.html` / `app.js`).
+  - Los chips de filtro de la barra lateral se generan automáticamente a
+    partir de las categorías presentes en esta pestaña — no hay que tocar el
+    código si agregas una categoría nueva (hoy: `Aguas`, `Cocina base`).
 - **Ingredientes**: `receta_id, ingrediente, cantidad, unidad`
   - Varias filas por `receta_id`, una por ingrediente.
 - **Preparacion**: `receta_id, paso_num, instruccion`
