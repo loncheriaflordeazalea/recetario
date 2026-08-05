@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recetario — Flor de Azalea</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="screen-loading" class="screen">
+  <div class="marca">
+    <p class="marca__titulo">Flor de Azalea</p>
+    <p class="marca__subtitulo">Recetario de cocina</p>
+  </div>
+  <div class="tarjeta">Cargando…</div>
+</div>
+
+<div id="screen-config" class="screen hidden">
+  <div class="marca">
+    <p class="marca__titulo">Flor de Azalea</p>
+    <p class="marca__subtitulo">Recetario de cocina</p>
+  </div>
+  <div class="tarjeta">
+    <h2>Configuración inicial</h2>
+    <p class="ayuda">Pega aquí la URL del backend (Google Apps Script Web App). Solo se pide una vez por dispositivo.</p>
+    <label for="input-backend-url">URL del backend</label>
+    <input type="url" id="input-backend-url" placeholder="https://script.google.com/macros/s/XXXXX/exec">
+    <div id="config-error" class="aviso aviso-error hidden"></div>
+    <button class="btn btn-primario" id="btn-guardar-url">Guardar y continuar</button>
+  </div>
+</div>
+
+<div id="screen-home" class="screen hidden">
+  <div class="marca">
+    <p class="marca__titulo">Flor de Azalea</p>
+    <p class="marca__subtitulo">Recetario de cocina</p>
+  </div>
+  <div class="tarjeta">
+    <label for="input-buscar">Buscar receta</label>
+    <input type="text" id="input-buscar" placeholder="Nombre de la receta…">
+
+    <label>Categoría</label>
+    <div class="filtro-grid" id="filtro-categorias">
+      <button type="button" class="filtro-btn selected" data-categoria="">Todas</button>
+      <button type="button" class="filtro-btn" data-categoria="Aguas">Aguas</button>
+      <button type="button" class="filtro-btn" data-categoria="Cocina base">Cocina base</button>
+    </div>
+
+    <div id="lista-recetas" class="lista-recetas"></div>
+    <div id="home-vacio" class="aviso aviso-info hidden">No se encontraron recetas.</div>
+  </div>
+</div>
+
+<div id="screen-ingredientes" class="screen hidden">
+  <header class="vista-header">
+    <button type="button" class="link-volver" id="btn-volver-ingredientes">← Volver al inicio</button>
+  </header>
+  <div class="tarjeta">
+    <h2 id="ingredientes-titulo"></h2>
+    <p class="receta-meta" id="ingredientes-meta"></p>
+    <p class="ayuda" id="ingredientes-notas"></p>
+    <div id="lista-ingredientes" class="lista-ingredientes"></div>
+    <button class="btn btn-primario" id="btn-comenzar-preparacion">Comenzar preparación</button>
+  </div>
+</div>
+
+<div id="screen-pasos" class="screen hidden">
+  <header class="vista-header">
+    <button type="button" class="link-volver" id="btn-volver-pasos">← Volver al inicio</button>
+  </header>
+  <div class="progress-bar"><div class="progress-bar__fill" id="pasos-progress-fill"></div></div>
+  <div class="progress-text" id="pasos-progress-text"></div>
+  <div class="tarjeta">
+    <h2 id="pasos-titulo"></h2>
+    <div class="paso-contenido" id="paso-contenido"></div>
+    <div class="paso-botones">
+      <button class="btn btn-secundario" id="btn-paso-anterior">Anterior</button>
+      <button class="btn btn-primario" id="btn-paso-siguiente">Siguiente</button>
+    </div>
+  </div>
+</div>
+
+<div id="screen-completado" class="screen hidden">
+  <div class="final">
+    <div class="final__icono">✅</div>
+    <h1>¡Preparación completada!</h1>
+    <p class="ayuda" id="completado-nombre"></p>
+    <button type="button" class="btn btn-primario" id="btn-volver-inicio">Volver al inicio</button>
+  </div>
+</div>
+
+<footer class="creditos">Lonchería Flor de Azalea</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
